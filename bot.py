@@ -9,7 +9,7 @@ TOKEN = "8691182355:AAGdU8A9PBW0DFIThCPWZGJKqWysq_kgRMk"
 
 logging.basicConfig(level=logging.INFO)
 
-# Повний оновлений словник
+# Повний словник (тепер з усіма російськими варіантами)
 bad_words = [
     "блядь", "блять", "сука", "хуй", "нахуй", "пізда", "пизда", "ебать", "йоб", "fuck", "shit", "bitch",
     "я твою мать ебал", "я твою маму ебал",
@@ -20,8 +20,9 @@ bad_words = [
     "еблан", "eblan", "eblanchik", "ебланище",
     # Трах та похідні:
     "трах", "трахал", "трахати", "трахає", "трахаюсь", "trah", "trahal",
-    # Варіанти з "сіськами":
-    "сіськи", "сиськи", "сиська", "сіська", "сися", "сіся", "tits", "boobs"
+    # Варіанти з "сіськами"/"сисями" (укр + рос):
+    "сіськи", "сиськи", "сиська", "сіська", "сися", "сіся", "сисі", "сісі", 
+    "сиси", "сисечки", "сиську", "tits", "boobs"
 ]
 
 dp = Dispatcher()
@@ -34,10 +35,7 @@ async def check_message(message: types.Message):
         for word in bad_words:
             if word in text:
                 try:
-                    # 1. Видаляємо повідомлення
                     await message.delete()
-                    
-                    # 2. Бан на 1 годину
                     until_date = datetime.now() + timedelta(hours=1)
                     await message.bot.restrict_chat_member(
                         chat_id=message.chat.id,
@@ -45,8 +43,6 @@ async def check_message(message: types.Message):
                         until_date=until_date,
                         permissions=ChatPermissions(can_send_messages=False)
                     )
-                    
-                    # 3. Попередження в чат
                     await message.answer(f"@{message.from_user.username}, бан на 1 годину за порушення правил!")
                 except Exception as e:
                     print(f"Помилка: {e}")
@@ -59,4 +55,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-                
+    
