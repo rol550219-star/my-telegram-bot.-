@@ -43,7 +43,7 @@ async def check_message(message: types.Message):
                         until_date=until_date,
                         permissions=ChatPermissions(can_send_messages=False)
                     )
-                    await message.answer(f"@{message.from_user.username}, бан на 1 годину за порушення правил!")
+                    await message.answer(f"@{message.from_user.username}, бан на один час за нарушение правил!")
                 except Exception as e:
                     print(f"Помилка: {e}")
                 break
